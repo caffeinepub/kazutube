@@ -65,8 +65,10 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
                 width: 120,
                 height: 120,
                 background: "rgba(255,255,255,0.05)",
-                border: "2px solid rgba(255,255,255,0.1)",
+                border: "2px solid rgba(64,196,255,0.4)",
                 backdropFilter: "blur(10px)",
+                boxShadow:
+                  "0 0 40px rgba(64,196,255,0.4), 0 0 80px rgba(229,57,53,0.2)",
               }}
             >
               <span
@@ -75,12 +77,13 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
                   fontWeight: 900,
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   background:
-                    "linear-gradient(135deg, #E53935, #FF6B6B, #40C4FF)",
+                    "linear-gradient(135deg, #40C4FF 0%, #E53935 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   lineHeight: 1,
                   letterSpacing: "-2px",
+                  filter: "drop-shadow(0 0 12px rgba(64,196,255,0.8))",
                 }}
               >
                 KT

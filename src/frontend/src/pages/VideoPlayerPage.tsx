@@ -69,6 +69,9 @@ export default function VideoPlayerPage({
   const canSubscribe =
     currentUser !== null && currentUser.id !== video.uploadedBy;
 
+  const displayName = uploaderUser ? uploaderUser.name : video.uploaderName;
+  const channelHandle = uploaderUser ? uploaderUser.channelName : null;
+
   const handleLike = () => {
     if (!currentUser) return;
     onToggleLike(video.id, currentUser.id);
@@ -81,7 +84,7 @@ export default function VideoPlayerPage({
       toast("Unsubscribed");
     } else {
       onSubscribe(video.uploadedBy, currentUser.id);
-      toast.success(`Subscribed to ${video.uploaderName}`);
+      toast.success(`Subscribed to ${displayName}`);
     }
   };
 
@@ -111,7 +114,6 @@ export default function VideoPlayerPage({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Back button */}
       <button
         type="button"
         data-ocid="player.button"
@@ -129,16 +131,15 @@ export default function VideoPlayerPage({
           className="rounded-2xl overflow-hidden mb-5"
           style={{ aspectRatio: "16/9", background: "#0F1A24" }}
         >
-          <iframe
+          {/* biome-ignore lint/a11y/useMediaCaption: captions not available for user-uploaded content */}
+          <video
             src={video.videoUrl}
+            controls
             className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title={video.title}
+            style={{ objectFit: "contain", background: "#0F1A24" }}
           />
         </div>
 
-        {/* Title & meta */}
         <h1 className="text-xl font-bold mb-3" style={{ color: "#0F1A24" }}>
           {video.title}
         </h1>
@@ -147,15 +148,11 @@ export default function VideoPlayerPage({
           className="flex items-center justify-between flex-wrap gap-3 mb-4 pb-4"
           style={{ borderBottom: "1px solid #E0EAF4" }}
         >
-          {/* Channel info + Subscribe */}
           <div className="flex items-center gap-3 flex-wrap">
             <Avatar className="w-10 h-10">
-              <AvatarImage
-                src={video.uploaderAvatar}
-                alt={video.uploaderName}
-              />
+              <AvatarImage src={video.uploaderAvatar} alt={displayName} />
               <AvatarFallback style={{ background: "#E53935", color: "white" }}>
-                {video.uploaderName.slice(0, 2).toUpperCase()}
+                {displayName.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
             <div>
@@ -165,19 +162,23 @@ export default function VideoPlayerPage({
                 onClick={() =>
                   onNavigate({ name: "channel", id: video.uploadedBy })
                 }
-                className="font-semibold text-sm hover:underline"
+                className="font-semibold text-sm hover:underline block"
                 style={{ color: "#0F1A24" }}
               >
-                {video.uploaderName}
+                {displayName}
               </button>
-              <p className="text-xs" style={{ color: "#6B7280" }}>
+              {channelHandle && (
+                <p className="text-xs" style={{ color: "#6B7280" }}>
+                  {channelHandle}
+                </p>
+              )}
+              <p className="text-xs" style={{ color: "#9CA3AF" }}>
                 {uploaderUser
                   ? formatSubscribers(uploaderUser.subscriberCount)
                   : ""}
               </p>
             </div>
 
-            {/* Subscribe button */}
             {canSubscribe && (
               <button
                 type="button"
@@ -195,9 +196,7 @@ export default function VideoPlayerPage({
             )}
           </div>
 
-          {/* Action buttons */}
           <div className="flex items-center gap-2">
-            {/* Views counter */}
             <div
               className="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium"
               style={{ background: "#EEF3F7", color: "#374151" }}
@@ -206,7 +205,6 @@ export default function VideoPlayerPage({
               {formatViews(video.views)}
             </div>
 
-            {/* Like button */}
             <button
               type="button"
               data-ocid="player.primary_button"
@@ -223,7 +221,6 @@ export default function VideoPlayerPage({
               {video.likes.length.toLocaleString()}
             </button>
 
-            {/* Share button */}
             <button
               type="button"
               data-ocid="player.secondary_button"
@@ -241,7 +238,6 @@ export default function VideoPlayerPage({
           </div>
         </div>
 
-        {/* Description */}
         <p
           className="text-sm mb-6 leading-relaxed"
           style={{ color: "#374151" }}
@@ -249,13 +245,11 @@ export default function VideoPlayerPage({
           {video.description}
         </p>
 
-        {/* Comments */}
         <div data-ocid="comments.section">
           <h2 className="font-bold mb-4" style={{ color: "#0F1A24" }}>
             {video.comments.length} Comments
           </h2>
 
-          {/* Comment input */}
           {currentUser ? (
             <div className="flex gap-3 mb-6">
               <Avatar className="w-9 h-9 shrink-0">
@@ -302,7 +296,6 @@ export default function VideoPlayerPage({
             </p>
           )}
 
-          {/* Comments list */}
           <div className="space-y-4" data-ocid="comments.list">
             {video.comments.map((comment, i) => (
               <div

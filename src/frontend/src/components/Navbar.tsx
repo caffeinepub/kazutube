@@ -72,18 +72,22 @@ export default function Navbar({
             style={{
               width: 36,
               height: 36,
-              background: "rgba(255,255,255,0.08)",
+              background: "rgba(15,26,36,0.9)",
+              border: "1.5px solid rgba(64,196,255,0.4)",
+              boxShadow:
+                "0 0 12px rgba(64,196,255,0.35), 0 0 24px rgba(229,57,53,0.2)",
             }}
           >
             <span
               style={{
                 fontSize: 18,
                 fontWeight: 900,
-                background: "linear-gradient(135deg, #E53935, #40C4FF)",
+                background: "linear-gradient(135deg, #40C4FF 0%, #E53935 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
                 lineHeight: 1,
+                filter: "drop-shadow(0 0 6px rgba(64,196,255,0.6))",
               }}
             >
               KT
@@ -147,7 +151,7 @@ export default function Navbar({
               <button
                 type="button"
                 data-ocid="navbar.button"
-                className="flex items-center gap-2 rounded-full hover:bg-white/10 p-1 transition-colors"
+                className="flex items-center gap-2 rounded-full hover:bg-white/10 px-2 py-1 transition-colors"
               >
                 <Avatar className="w-8 h-8">
                   <AvatarImage
@@ -161,6 +165,14 @@ export default function Navbar({
                     {currentUser.name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
+                <div className="hidden md:flex flex-col items-start">
+                  <span className="text-white text-xs font-semibold leading-tight">
+                    {currentUser.name}
+                  </span>
+                  <span className="text-white/50 text-xs leading-tight">
+                    {currentUser.channelName}
+                  </span>
+                </div>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">

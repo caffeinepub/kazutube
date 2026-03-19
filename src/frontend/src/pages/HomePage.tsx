@@ -78,9 +78,14 @@ export default function HomePage({ videos, onNavigate }: HomePageProps) {
 
       {/* Video grid */}
       <section data-ocid="videos.section">
-        <h2 className="text-lg font-bold mb-4" style={{ color: "#0F1A24" }}>
-          @KazuyaXedit
-        </h2>
+        <div className="mb-4">
+          <h2 className="text-lg font-bold" style={{ color: "#0F1A24" }}>
+            KAZUYA EDITX
+          </h2>
+          <p className="text-sm" style={{ color: "#6B7280" }}>
+            @KazuyaXedit
+          </p>
+        </div>
         {regular.length === 0 ? (
           <div data-ocid="videos.empty_state" className="text-center py-20">
             <p className="text-5xl mb-4">🎬</p>
@@ -91,7 +96,7 @@ export default function HomePage({ videos, onNavigate }: HomePageProps) {
               No videos yet
             </p>
             <p className="text-sm" style={{ color: "#6B7280" }}>
-              @KazuyaXedit hasn't uploaded any videos yet. Check back soon!
+              KAZUYA EDITX hasn't uploaded any videos yet. Check back soon!
             </p>
           </div>
         ) : (

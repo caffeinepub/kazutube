@@ -6,7 +6,7 @@ const VIDEOS_KEY = "kz_videos";
 const CURRENT_USER_KEY = "kz_current_user";
 const SUBSCRIPTIONS_KEY = "kz_subscriptions";
 const SEED_VER_KEY = "kz_seed_ver";
-const SEED_VERSION = "v3";
+const SEED_VERSION = "v6";
 
 function genId(): string {
   return Math.random().toString(36).slice(2, 10);
@@ -18,6 +18,7 @@ function initSeedData() {
   // Clear old data
   localStorage.removeItem(USERS_KEY);
   localStorage.removeItem(VIDEOS_KEY);
+  localStorage.removeItem(CURRENT_USER_KEY);
 
   const ownerId = "owner_001";
   const users: User[] = [
@@ -25,7 +26,7 @@ function initSeedData() {
       id: ownerId,
       email: "owner@kazutube.com",
       password: "kazutube123",
-      name: "KazuyaXedit",
+      name: "KAZUYA EDITX",
       role: "owner",
       createdAt: new Date(Date.now() - 180 * 86400000).toISOString(),
       channelName: "@KazuyaXedit",

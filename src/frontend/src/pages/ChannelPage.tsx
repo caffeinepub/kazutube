@@ -60,7 +60,7 @@ export default function ChannelPage({
       toast("Unsubscribed");
     } else {
       onSubscribe(channelUser.id, currentUser.id);
-      toast.success(`Subscribed to ${channelUser.channelName}`);
+      toast.success(`Subscribed to ${channelUser.name}`);
     }
   };
 
@@ -111,10 +111,12 @@ export default function ChannelPage({
           </Avatar>
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-white">
-              {channelUser.channelName}
+              {channelUser.name}
             </h1>
-            <p className="text-white/70 text-sm">{channelUser.name}</p>
-            <p className="text-white/50 text-sm">
+            <p className="text-white/60 text-sm font-medium">
+              {channelUser.channelName}
+            </p>
+            <p className="text-white/50 text-sm mt-0.5">
               {subCount} subscribers ·{" "}
               {channelVideos.length + channelShorts.length} videos
             </p>

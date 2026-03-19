@@ -97,18 +97,33 @@ export default function AuthModal({
                 style={{ borderBottom: "1px solid #EEF3F7" }}
               >
                 <div className="flex items-center gap-2">
-                  <span
+                  <div
+                    className="rounded-lg flex items-center justify-center"
                     style={{
-                      fontSize: 22,
-                      fontWeight: 900,
-                      background: "linear-gradient(135deg, #E53935, #40C4FF)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
+                      width: 40,
+                      height: 40,
+                      background: "#0F1A24",
+                      border: "1.5px solid rgba(64,196,255,0.4)",
+                      boxShadow:
+                        "0 0 12px rgba(64,196,255,0.35), 0 0 24px rgba(229,57,53,0.2)",
                     }}
                   >
-                    KT
-                  </span>
+                    <span
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 900,
+                        background:
+                          "linear-gradient(135deg, #40C4FF 0%, #E53935 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                        lineHeight: 1,
+                        filter: "drop-shadow(0 0 6px rgba(64,196,255,0.6))",
+                      }}
+                    >
+                      KT
+                    </span>
+                  </div>
                   <span
                     className="font-bold text-lg"
                     style={{ color: "#0F1A24" }}

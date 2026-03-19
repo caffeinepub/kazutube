@@ -28,15 +28,12 @@ export default function App() {
   }, []);
 
   const shorts = store.videos.filter((v) => v.isShort);
-  const ownerVideos = store.videos.filter(
-    (v) => store.users.find((u) => u.id === v.uploadedBy)?.role === "owner",
-  );
   const sidebarWidth = sidebarOpen ? 220 : 0;
 
   const renderPage = () => {
     switch (currentPage.name) {
       case "home":
-        return <HomePage videos={ownerVideos} onNavigate={navigate} />;
+        return <HomePage videos={store.videos} onNavigate={navigate} />;
       case "video": {
         const video = store.videos.find((v) => v.id === currentPage.id);
         const uploaderUser = video
@@ -94,6 +91,7 @@ export default function App() {
           <UploadPage
             currentUser={store.currentUser}
             onNavigate={navigate}
+            onLoginClick={() => setAuthOpen(true)}
             onAddVideo={(v) => {
               store.addVideo(v);
             }}
@@ -112,7 +110,7 @@ export default function App() {
           />
         );
       default:
-        return <HomePage videos={ownerVideos} onNavigate={navigate} />;
+        return <HomePage videos={store.videos} onNavigate={navigate} />;
     }
   };
 
