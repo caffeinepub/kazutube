@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.625rem;
+    --background: 0.962 0.012 230;
+    --foreground: 0.145 0.033 232;
+    --card: 1 0 0;
+    --card-foreground: 0.145 0.033 232;
+    --popover: 1 0 0;
+    --popover-foreground: 0.145 0.033 232;
+    --primary: 0.498 0.218 27;
+    --primary-foreground: 1 0 0;
+    --secondary: 0.97 0.01 230;
+    --secondary-foreground: 0.145 0.033 232;
+    --muted: 0.93 0.015 230;
+    --muted-foreground: 0.5 0.02 230;
+    --accent: 0.762 0.142 213;
+    --accent-foreground: 0.1 0.025 232;
+    --destructive: 0.498 0.218 27;
+    --destructive-foreground: 1 0 0;
+    --border: 0.88 0.015 230;
+    --input: 0.88 0.015 230;
+    --ring: 0.762 0.142 213;
+    --chart-1: 0.498 0.218 27;
+    --chart-2: 0.762 0.142 213;
+    --chart-3: 0.6 0.118 184;
+    --chart-4: 0.828 0.189 84;
+    --chart-5: 0.769 0.188 70;
+    --sidebar: 0.972 0.01 230;
+    --sidebar-foreground: 0.145 0.033 232;
+    --sidebar-primary: 0.498 0.218 27;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.92 0.05 220;
+    --sidebar-accent-foreground: 0.3 0.1 213;
+    --sidebar-border: 0.88 0.015 230;
+    --sidebar-ring: 0.762 0.142 213;
+    --navbar: 0.145 0.033 232;
+    --navbar-darker: 0.1 0.025 232;
+    --kz-red: 0.498 0.218 27;
+    --kz-blue: 0.762 0.142 213;
+    --kz-dark: 0.14 0.033 232;
+    --kz-search-bg: 0.22 0.04 232;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 20px oklch(0.498 0.218 27))
+      drop-shadow(0 0 40px oklch(0.762 0.142 213 / 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px oklch(0.498 0.218 27 / 0.9))
+      drop-shadow(0 0 80px oklch(0.762 0.142 213 / 0.9));
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+.fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+.fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
