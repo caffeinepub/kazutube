@@ -14,6 +14,8 @@ export default function VideoCard({
   onClick,
   index = 0,
 }: VideoCardProps) {
+  const totalViews = (video.baseViews ?? 0) + video.views;
+
   return (
     <motion.div
       data-ocid={`videos.item.${index + 1}`}
@@ -65,7 +67,7 @@ export default function VideoCard({
             {video.uploaderName}
           </p>
           <p className="text-xs" style={{ color: "#9CA3AF" }}>
-            {formatViews(video.views)} · {timeAgo(video.createdAt)}
+            {formatViews(totalViews)} · {timeAgo(video.createdAt)}
           </p>
         </div>
       </div>

@@ -80,11 +80,8 @@ export default function HomePage({ videos, onNavigate }: HomePageProps) {
       <section data-ocid="videos.section">
         <div className="mb-4">
           <h2 className="text-lg font-bold" style={{ color: "#0F1A24" }}>
-            KAZUYA EDITX
+            All Videos
           </h2>
-          <p className="text-sm" style={{ color: "#6B7280" }}>
-            @KazuyaXedit
-          </p>
         </div>
         {regular.length === 0 ? (
           <div data-ocid="videos.empty_state" className="text-center py-20">
@@ -96,7 +93,7 @@ export default function HomePage({ videos, onNavigate }: HomePageProps) {
               No videos yet
             </p>
             <p className="text-sm" style={{ color: "#6B7280" }}>
-              KAZUYA EDITX hasn't uploaded any videos yet. Check back soon!
+              No videos have been uploaded yet. Check back soon!
             </p>
           </div>
         ) : (

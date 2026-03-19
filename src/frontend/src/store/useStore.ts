@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Comment, User, Video } from "../types";
 
 const USERS_KEY = "kz_users";
@@ -6,10 +6,112 @@ const VIDEOS_KEY = "kz_videos";
 const CURRENT_USER_KEY = "kz_current_user";
 const SUBSCRIPTIONS_KEY = "kz_subscriptions";
 const SEED_VER_KEY = "kz_seed_ver";
-const SEED_VERSION = "v6";
+const SEED_VERSION = "v7";
 
 function genId(): string {
   return Math.random().toString(36).slice(2, 10);
+}
+
+const FAKE_USERS = [
+  {
+    id: "fu_animeFan21",
+    name: "animeFan21",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=AF&backgroundColor=7C3AED&textColor=ffffff",
+  },
+  {
+    id: "fu_otaku_editz",
+    name: "otaku_editz",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=OE&backgroundColor=059669&textColor=ffffff",
+  },
+  {
+    id: "fu_naruto_x",
+    name: "naruto_x",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=NX&backgroundColor=D97706&textColor=ffffff",
+  },
+  {
+    id: "fu_solo_leveler",
+    name: "solo_leveler",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=SL&backgroundColor=DC2626&textColor=ffffff",
+  },
+  {
+    id: "fu_gojo_fan",
+    name: "gojo_fan",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=GF&backgroundColor=0284C7&textColor=ffffff",
+  },
+  {
+    id: "fu_edit_master",
+    name: "edit_master",
+    avatar:
+      "https://api.dicebear.com/7.x/initials/svg?seed=EM&backgroundColor=BE185D&textColor=ffffff",
+  },
+];
+
+const SAMPLE_COMMENT_TEXTS = [
+  "This edit is absolutely insane!! 🔥🔥",
+  "Bro the transitions are so clean, how do you do this?",
+  "W edit as always, keep it up man 💯",
+  "This goes crazy hard ngl",
+  "The music sync is perfect, love it!",
+  "Every single edit hits different fr",
+  "Can't stop rewatching this 😭😭",
+  "The color grading is on another level",
+  "This deserves way more views honestly",
+  "Bro woke up and chose to go crazy with the edits 🔥",
+  "This is literally the best edit I've seen this week",
+  "The way you timed that to the beat 🤯",
+  "Keep posting bro, you're criminally underrated",
+  "Subscribed instantly after watching this",
+  "The effects are so smooth omg",
+  "This style is so unique, nobody edits like you",
+  "I showed this to my friends and they went crazy",
+  "Bro said no cap and delivered 🔥",
+  "Editing on god tier rn",
+  "Please drop a tutorial on how you do these transitions",
+];
+
+function makeSampleComments(): Comment[] {
+  const now = Date.now();
+  const comments: Comment[] = [];
+  const offsets = [
+    3 * 3600 * 1000,
+    7 * 3600 * 1000,
+    14 * 3600 * 1000,
+    1 * 86400 * 1000,
+    2 * 86400 * 1000,
+    3 * 86400 * 1000,
+    5 * 86400 * 1000,
+    7 * 86400 * 1000,
+    10 * 86400 * 1000,
+    14 * 86400 * 1000,
+    18 * 86400 * 1000,
+    21 * 86400 * 1000,
+    25 * 86400 * 1000,
+    30 * 86400 * 1000,
+    35 * 86400 * 1000,
+    42 * 86400 * 1000,
+    50 * 86400 * 1000,
+    55 * 86400 * 1000,
+    60 * 86400 * 1000,
+    70 * 86400 * 1000,
+  ];
+  for (let i = 0; i < SAMPLE_COMMENT_TEXTS.length; i++) {
+    const fakeUser = FAKE_USERS[i % FAKE_USERS.length];
+    comments.push({
+      id: `sc_${i}`,
+      userId: fakeUser.id,
+      userName: fakeUser.name,
+      userAvatar: fakeUser.avatar,
+      text: SAMPLE_COMMENT_TEXTS[i],
+      createdAt: new Date(now - offsets[i]).toISOString(),
+    });
+  }
+  // Return in reverse so newest first
+  return comments.reverse();
 }
 
 function initSeedData() {
@@ -32,7 +134,7 @@ function initSeedData() {
       channelName: "@KazuyaXedit",
       avatar:
         "https://api.dicebear.com/7.x/initials/svg?seed=KX&backgroundColor=E53935&textColor=ffffff",
-      subscriberCount: 0,
+      subscriberCount: 45000,
     },
   ];
 
@@ -120,6 +222,40 @@ export function useKzStore() {
     Record<string, string[]>
   >(() => loadSubscriptions());
 
+  // Cross-tab sync: picks up changes made by the admin panel in another tab
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === VIDEOS_KEY && e.newValue) {
+        try {
+          setVideosState(JSON.parse(e.newValue));
+        } catch {}
+      } else if (e.key === USERS_KEY && e.newValue) {
+        try {
+          setUsersState(JSON.parse(e.newValue));
+        } catch {}
+      } else if (e.key === SUBSCRIPTIONS_KEY && e.newValue) {
+        try {
+          setSubscriptionsState(JSON.parse(e.newValue));
+        } catch {}
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  // Visibility sync: reload from localStorage when this tab becomes visible again
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") {
+        setVideosState(loadVideos());
+        setUsersState(loadUsers());
+        setSubscriptionsState(loadSubscriptions());
+      }
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, []);
+
   const currentUser = users.find((u) => u.id === currentUserId) || null;
 
   const setUsers = useCallback((u: User[]) => {
@@ -190,15 +326,28 @@ export function useKzStore() {
 
   const addVideo = useCallback(
     (
-      video: Omit<Video, "id" | "views" | "likes" | "comments" | "createdAt">,
+      video: Omit<
+        Video,
+        | "id"
+        | "views"
+        | "likes"
+        | "comments"
+        | "createdAt"
+        | "baseViews"
+        | "baseLikes"
+        | "baseCommentCount"
+      >,
     ) => {
       const newVideo: Video = {
         ...video,
         id: `vid_${genId()}`,
         views: 0,
         likes: [],
-        comments: [],
+        comments: makeSampleComments(),
         createdAt: new Date().toISOString(),
+        baseViews: 214000,
+        baseLikes: 12000,
+        baseCommentCount: 3000,
       };
       const updated = [newVideo, ...videos];
       setVideos(updated);
@@ -227,7 +376,7 @@ export function useKzStore() {
   const addComment = useCallback(
     (videoId: string, comment: Comment) => {
       const updated = videos.map((v) =>
-        v.id === videoId ? { ...v, comments: [...v.comments, comment] } : v,
+        v.id === videoId ? { ...v, comments: [comment, ...v.comments] } : v,
       );
       setVideos(updated);
     },

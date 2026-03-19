@@ -3,11 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { HttpAgent } from "@icp-sdk/core/agent";
 import { ImageIcon, LogIn, Upload, VideoIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { useRef, useState } from "react";
-import { createStorageClient } from "../config";
+import { loadConfig } from "../config";
 import type { Page, User, Video } from "../types";
+import { StorageClient } from "../utils/StorageClient";
 
 interface UploadPageProps {
   currentUser: User | null;
@@ -99,7 +101,15 @@ export default function UploadPage({
 
     setUploading(true);
     try {
-      const storage = await createStorageClient();
+      const config = await loadConfig();
+      const agent = new HttpAgent({ host: config.backend_host });
+      const storage = new StorageClient(
+        config.bucket_name,
+        config.storage_gateway_url,
+        config.backend_canister_id,
+        config.project_id,
+        agent,
+      );
 
       const thumbBytes = new Uint8Array(await thumbnailFile.arrayBuffer());
       const { hash: thumbHash } = await storage.putFile(thumbBytes);
@@ -262,7 +272,7 @@ export default function UploadPage({
                 id="video-file-input"
                 data-ocid="upload.upload_button"
                 type="file"
-                accept="video/*"
+                accept="video/mp4,video/webm,.mov"
                 className="hidden"
                 onChange={handleVideoSelect}
               />
@@ -308,7 +318,7 @@ export default function UploadPage({
                 id="thumb-file-input"
                 data-ocid="upload.dropzone"
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png,.jpg,.jpeg,.png"
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];

@@ -61,6 +61,10 @@ export default function VideoPlayerPage({
     );
   }
 
+  const totalViews = (video.baseViews ?? 0) + video.views;
+  const totalLikes = (video.baseLikes ?? 0) + video.likes.length;
+  const totalComments = (video.baseCommentCount ?? 0) + video.comments.length;
+
   const hasLiked = currentUser ? video.likes.includes(currentUser.id) : false;
   const subscribed =
     currentUser && video.uploadedBy
@@ -202,7 +206,7 @@ export default function VideoPlayerPage({
               style={{ background: "#EEF3F7", color: "#374151" }}
             >
               <Eye size={15} />
-              {formatViews(video.views)}
+              {formatViews(totalViews)}
             </div>
 
             <button
@@ -218,7 +222,7 @@ export default function VideoPlayerPage({
               }}
             >
               <ThumbsUp size={16} />
-              {video.likes.length.toLocaleString()}
+              {totalLikes.toLocaleString()}
             </button>
 
             <button
@@ -247,7 +251,7 @@ export default function VideoPlayerPage({
 
         <div data-ocid="comments.section">
           <h2 className="font-bold mb-4" style={{ color: "#0F1A24" }}>
-            {video.comments.length} Comments
+            {totalComments.toLocaleString()} Comments
           </h2>
 
           {currentUser ? (

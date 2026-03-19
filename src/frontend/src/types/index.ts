@@ -35,6 +35,9 @@ export interface Video {
   createdAt: string;
   tags: string[];
   duration: string;
+  baseViews?: number;
+  baseLikes?: number;
+  baseCommentCount?: number;
 }
 
 export type Page =
