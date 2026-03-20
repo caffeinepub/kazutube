@@ -1,0 +1,22 @@
+{
+  "name": "Kazutube",
+  "short_name": "Kazutube",
+  "description": "Watch and upload videos on Kazutube",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#38bdf8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/generated/kazutube-icon-192.dim_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/generated/kazutube-icon.dim_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
